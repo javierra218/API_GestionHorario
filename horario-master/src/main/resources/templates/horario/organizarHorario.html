@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Horario</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+	
+</head>
+<body>
+	<img src="https://www.shutterstock.com/image-vector/schedule-icon-calendar-time-vector-260nw-1687100644.jpg" width="136" height="136" >
+	<div class="container px-lg-5">
+		<div class="row">
+			<div class="col-sm-6">
+<select name="servicioselect" id="servicioselect" onchange="redireccionar();">
+	<option> </option>
+	<option th:each="facultad : ${facultades}" th:text="${facultad.fac_nombre}" th:value="${facultad.fac_codigo}"  > </option> <!-- th:selected="${facultad.fac_nombre == facultadseleccionada}" -->
+</select>
+				<div>
+					<table class="datatable">
+						<thead>
+							<tr>
+								<th><input id="check_all" type="checkbox"></th>
+								<th>ID</th>
+								<th>Code</th>
+								<th>Name</th>
+								<th>Price</th>
+			                </tr>
+			            </thead>
+						<tbody>
+							<tr class="odd_col">
+								<td><input type="checkbox" name="row-check" value="1"></td>
+								<td>1</td>
+								<td>AMTR01</td>
+								<td>American Tourist</td>
+								<td>12000</td>
+							</tr>
+							<tr class="even_col">
+								<td><input type="checkbox" name="row-check" value="2"></td>
+								<td>2</td>
+								<td>USB02</td>
+								<td>EXP Portable Hard Drive</td>
+								<td>5000</td>
+							</tr>
+							<tr class="odd_col">
+								<td><input type="checkbox" name="row-check" value="3"></td>
+								<td>3</td>
+								<td>SH03</td>
+								<td>Shoes</td>
+								<td>1000</td>
+							</tr>
+							<tr class="even_col">
+								<td><input type="checkbox" name="row-check" value="4"></td>
+								<td>4</td>
+								<td>LPN4</td>
+								<td>XP 1155 Intel Core Laptop</td>
+								<td>80000</td>
+							</tr>
+							<tr class="odd_col">
+								<td><input type="checkbox" name="row-check" value="5"></td>
+								<td>5</td>
+								<td>3DCAM01</td>
+								<td>FinePix Pro2 3D Camera</td>
+								<td>150000</td>
+							</tr>
+							<tr class="even_col">
+								<td><input type="checkbox" name="row-check" value="6"></td>
+								<td>6</td>
+								<td>MB06</td>
+								<td>Simple Mobile</td>
+								<td>3000</td>
+							</tr>
+							<tr class="odd_col">
+								<td><input type="checkbox" name="row-check" value="7"></td>
+								<td>7</td>
+								<td>WristWear03</td>
+								<td>Luxury Ultra thin Wrist Watch</td>
+								<td>3000</td>
+							</tr>
+							<tr class="even_col">
+								<td><input type="checkbox" name="row-check" value="8"></td>
+								<td>8</td>
+								<td>HD08</td>
+								<td>Headphone</td>
+								<td>400</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<table class="table table-striped table-bordered table-hover">
+				 	<thead>
+				 		<tr>
+				 			<th>HORARIO</th>
+				 		</tr>
+				 		<tr>
+						  	<tr id="Cabecera_2">
+			                <th>HORA</th>
+			                <th>LUNES</th>
+			                <th>MARTES</th>
+			                <th>MIERCOLES</th>
+			                <th>JUEVES</th>
+			                <th>VIERNES</th>
+			                <th>SABADO</th>
+			            </tr>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>	 
+				</table>
+			</div>
+		</div>
+	</div>
+	           
+	 
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+	<script type="text/javascript" th:src="@{/jquery/jquery-3.6.0.js}"></script>
+	<script type="text/javascript" charset="utf8" th:src="@{/jquery/jquery-ui.min.js}"></script>
+	<script type="text/javascript">
+		function redireccionar(){
+			var nombreservicio = document.getElementById("servicioselect").value;
+			console.log(nombreservicio)
+			$.ajax({
+				method: "GET",
+				url: "/horario/recursos/"+nombreservicio,
+				success: function(data){
+					response($.map(data, function(item){
+						return{
+							value: item.rec_codigo	
+						}
+					}));
+				},
+			});
+		}
+		$(document).ready(function(){
+			
+			
+		});
+	</script>
+	<script type="text/javascript" >
+		$(function() {
+			//If check_all checked then check all table rows
+			$("#check_all").on("click", function () {
+				if ($("input:checkbox").prop("checked")) {
+					$("input:checkbox[name='row-check']").prop("checked", true);
+				} else {
+					$("input:checkbox[name='row-check']").prop("checked", false);
+				}
+			});
+		
+			// Check each table row checkbox
+			$("input:checkbox[name='row-check']").on("change", function () {
+				var total_check_boxes = $("input:checkbox[name='row-check']").length;
+				var total_checked_boxes = $("input:checkbox[name='row-check']:checked").length;
+		
+				// If all checked manually then check check_all checkbox
+				if (total_check_boxes === total_checked_boxes) {
+					$("#check_all").prop("checked", true);
+				}
+				else {
+					$("#check_all").prop("checked", false);
+				}
+			});
+		});
+		
+	</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Horario</title>
+	
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/offcanvas.css}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/component.css}" />
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+	<style>
+		body {
+
+			background: rgb(174, 182, 238);
+			background: radial-gradient(circle, rgba(174, 182, 238, 0.6474964985994398) 0%, rgba(148, 187, 233, 0.03125) 100%);
+		}
+	</style>
+</head>
+
+<body class="cbp-spmenu-push"> <!-- clase para que el body se mueva-->
+		<nav class="navbar fixed-top " aria-label="Main navigation">
+	  <div class="container-fluid">
+	  	<button class="btn" id="showLeftPush"><i class="fa fa-reorder" style="font-size:20px;color:rgb(255, 255, 255)"> </i></button>
+	    <span class="fs-5 fw-bolder" style="color: white;"> S-GestionHorarios </span>
+	    <button class="navbar-toggler p-0 border-0" type="button" id="navbarSideCollapse" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"> </span>
+	    </button>
+	    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+	      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	        
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+		<div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+			<div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 245px; ">
+					<p href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+				      <svg class="bi me-2" width="50" height="100"><use xlink:href="#bootstrap"/></svg>
+				      <span class="fs-4">Juan Ruales</span><br>
+				     
+				    </p>
+				    <hr>
+				    <ul class="nav nav-pills flex-column mb-auto">
+				    	<li class="nav-item">
+				    		<a class="btn" href="http://localhost:4200/#/dashboard/home"><i class="bi bi-house-fill" style="font-size:20px;color:rgb(0, 0, 0)"> </i> <span class="px-2">Home</span></a>
+				    	</li>
+				      <li>
+				        <a class="btn" href="http://localhost:4200/#/dashboard/recurso"><i class="fa fa-plus-circle" style="font-size:20px;color:rgb(0, 0, 0)"> </i> <span class="px-2">Recursos</span></a>
+				      </li>
+				      <li>
+				      	<a class="btn" href="http://localhost:4200/#/dashboard/archivo"><i class="bi bi-file-earmark-plus-fill" style="font-size:20px;color:rgb(0, 0, 0)"> </i> <span class="px-2">Subir Archivo</span></a>
+				      </li>
+				      <li>
+				        <a class="btn" href="http://localhost:4200/#/dashboard/Asignaccion"><i class="bi bi-plus-lg" style="font-size:20px;color:rgb(0, 0, 0)"> </i> <span class="px-2">Asignar Recursos</span></a>
+				      <li>
+				        <a class="btn" href="http://localhost:4200/#/dashboard/Horario"><i class="fa fa-calendar-o" style="font-size:20px;color:rgb(0, 0, 0)"> </i> <span class="px-2">Programar Cursos</span></a>
+				      </li>
+			    	</ul>
+				</div>
+		</div>
+
+
+		<div class="container">
+			<div class="main">
+					<span type="hidden" id="showLeft"> </span>
+					<span type="hidden" id="showRight"> </span>
+					<span type="hidden" id="showTop"> </span>
+					<span type="hidden" id="showBottom"> </span>
+					
+					<div class="container p-2 ">
+		<div class="card">
+			<div class="card-header">
+				<h1 class="text-primary text-center" th:text="'HORARIO: '+${recurso.rec_descripcion}+' '+${recurso.rec_nombre}"> </h1>
+			</div>
+			<table class="table table-striped table-bordered ">
+				<thead>
+
+					
+					<tr id="Cabecera_2">
+						<th>HORA</th>
+						<th>LUNES</th>
+						<th>MARTES</th>
+						<th>MIERCOLES</th>
+						<th>JUEVES</th>
+						<th>VIERNES</th>
+						<th>SABADO</th>
+					</tr>
+					
+				</thead>
+				<tbody>
+					<tr th:each="i : ${#numbers.sequence(0, 6)}">
+						<td th:utext="${horas[i]}"> </td>
+						<td th:style="'background-color: '+${lunes[i].asig_color}+';'" th:text="${lunes[i].asig_nombre}+' '+${lunes[i].cur_nombre}"></td>
+						<td th:style="'background-color: '+${martes[i].asig_color}+';'" th:text="${martes[i].asig_nombre}+' '+${martes[i].cur_nombre}"></td>
+						<td th:style="'background-color: '+${miercoles[i].asig_color}+';'" th:text="${miercoles[i].asig_nombre}+' '+${miercoles[i].cur_nombre}"></td>
+						<td th:style="'background-color: '+${jueves[i].asig_color}+';'" th:text="${jueves[i].asig_nombre}+' '+${jueves[i].cur_nombre}"></td>
+						<td th:style="'background-color: '+${viernes[i].asig_color}+';'" th:text="${viernes[i].asig_nombre}+' '+${viernes[i].cur_nombre}"></td>
+						<td th:style="'background-color: '+${sabado[i].asig_color}+';'" th:text="${sabado[i].asig_nombre}+' '+${sabado[i].cur_nombre}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+			</div>
+		</div>
+	<script th:src="@{/scrpit/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/scrpit/classie.js}"></script>
+	<script th:src="@{/scrpit/offcanvas.js}"></script>
+
+	<script>
+			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
+				menuRight = document.getElementById( 'cbp-spmenu-s2' ),
+				menuTop = document.getElementById( 'cbp-spmenu-s3' ),
+				menuBottom = document.getElementById( 'cbp-spmenu-s4' ),
+				showLeft = document.getElementById( 'showLeft' ),
+				showRight = document.getElementById( 'showRight' ),
+				showTop = document.getElementById( 'showTop' ),
+				showBottom = document.getElementById( 'showBottom' ),
+				showLeftPush = document.getElementById( 'showLeftPush' ),
+				showRightPush = document.getElementById( 'showRightPush' ),
+				body = document.body;
+
+			showLeft.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuLeft, 'cbp-spmenu-open' );
+				disableOther( 'showLeft' );
+			};
+			showRight.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuRight, 'cbp-spmenu-open' );
+				disableOther( 'showRight' );
+			};
+			showTop.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuTop, 'cbp-spmenu-open' );
+				disableOther( 'showTop' );
+			};
+			showBottom.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( menuBottom, 'cbp-spmenu-open' );
+				disableOther( 'showBottom' );
+			};
+			showLeftPush.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( body, 'cbp-spmenu-push-toright' );
+				classie.toggle( menuLeft, 'cbp-spmenu-open' );
+				disableOther( 'showLeftPush' );
+			};
+			showRightPush.onclick = function() {
+				classie.toggle( this, 'active' );
+				classie.toggle( body, 'cbp-spmenu-push-toleft' );
+				classie.toggle( menuRight, 'cbp-spmenu-open' );
+				disableOther( 'showRightPush' );
+			};
+
+			function disableOther( button ) {
+				if( button !== 'showLeft' ) {
+					classie.toggle( showLeft, 'disabled' );
+				}
+				if( button !== 'showRight' ) {
+					classie.toggle( showRight, 'disabled' );
+				}
+				if( button !== 'showTop' ) {
+					classie.toggle( showTop, 'disabled' );
+				}
+				if( button !== 'showBottom' ) {
+					classie.toggle( showBottom, 'disabled' );
+				}
+				if( button !== 'showLeftPush' ) {
+					classie.toggle( showLeftPush, 'disabled' );
+				}
+				if( button !== 'showRightPush' ) {
+					classie.toggle( showRightPush, 'disabled' );
+				}
+			}
+		</script>
+	
+</body>
+
+</html>
+
+<!-- 
+
+-->
